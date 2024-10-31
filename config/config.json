@@ -1,0 +1,63 @@
+{
+  "timezone": "Asia/Jakarta",
+  "scheduledTime": "18:24",
+  "confirmation": {
+    "required": 1,
+    "maxRetries": 3,
+    "retryDelay": 5000
+  },
+  "weth": {
+    "iterations": 11,
+    "interval": 1,
+    "maxFee": "0.25",
+    "maxPriorityFee": "0.13"
+    "wallets": {
+      "wallet1": {
+        "amount_min": "0.010",
+        "amount_max": "0.016"
+      },
+      "wallet2": {
+        "amount_min": "0.010",
+        "amount_max": "0.016"
+	  },
+      "wallet3": {
+        "amount_min": "0.010",
+        "amount_max": "0.015"
+     },
+     "wallet4": {
+        "amount_min": "0.010",
+        "amount_max": "0.017"
+     },
+     "wallet5": {
+       "amount_min": "0.010",
+       "amount_max": "0.017"
+     },
+     "wallet6": {
+       "amount_min": "0.010",
+       "amount_max": "0.015"
+     },
+     "wallet7": {
+       "amount_min": "0.010",
+       "amount_max": "0.018"
+     },
+     "wallet8": {
+       "amount_min": "0.010",
+       "amount_max": "0.016"
+     },
+     "wallet9": {
+       "amount_min": "0.010",
+       "amount_max": "0.017"
+     },
+     "wallet10": {
+       "amount_min": "0.010",
+       "amount_max": "0.018"
+      }
+    }
+  },
+  "vote": {
+    "iterations": 50,
+    "interval": 1,
+    "maxFee": "0.25",
+    "maxPriorityFee": "0.13"
+  }
+}
