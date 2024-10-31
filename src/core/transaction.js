@@ -217,3 +217,16 @@ async function processWallets(walletConfigs, iteration) {
                     pointsEarned: pointsDifference,
                     totalPoints: finalPoints.totalPoints,
                     rank: finalPoints.rank
+});
+            }
+        })
+    );
+}
+
+module.exports = {
+    walletFees,
+    walletPoints,
+    executeTransactions,
+    waitForAllConfirmations,
+    processWallets
+};
