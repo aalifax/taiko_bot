@@ -147,7 +147,7 @@ async function processWallets(walletConfigs, iteration) {
                 contract.deposit({
                     value: randomAmount,
                     maxFeePerGas: ethers.utils.parseUnits("0.25", "gwei"),
-                    maxPriorityFeePerGas: ethers.utils.parseUnits("0.11", "gwei"),
+                    maxPriorityFeePerGas: ethers.utils.parseUnits("0.13", "gwei"),
                     gasLimit: 104817,
                 }),
             walletIndex: index,
@@ -180,7 +180,7 @@ async function processWallets(walletConfigs, iteration) {
                 operation: () =>
                     contract.withdraw(wethBalance, {
                         maxFeePerGas: ethers.utils.parseUnits("0.25", "gwei"),
-                        maxPriorityFeePerGas: ethers.utils.parseUnits("0.11", "gwei"),
+                        maxPriorityFeePerGas: ethers.utils.parseUnits("0.13", "gwei"),
                         gasLimit: 100000,
                     }),
                 walletIndex: index,
