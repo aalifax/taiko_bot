@@ -104,7 +104,6 @@ async function processWallets(walletConfigs, iteration) {
         chalk.cyan(`📌 [${getCurrentServerTime()}] Starting WETH iteration ${iteration + 1}`)
     );
 
-    // Initialize wallet info
     const walletInfos = await Promise.all(
         walletConfigs.map(async ({ privateKey, config: walletConfig }, index) => {
             const wallet = new ethers.Wallet(privateKey, provider);
@@ -124,7 +123,6 @@ async function processWallets(walletConfigs, iteration) {
         })
     );
 
-    // Prepare deposit operations
     const depositOperations = walletInfos.map(({ wallet, balance, index, config: walletConfig }) => {
         const contract = new ethers.Contract(WETH_ADDRESS, WETH_ABI, wallet);
         const min = ethers.utils.parseEther(walletConfig.amount_min);
@@ -148,21 +146,20 @@ async function processWallets(walletConfigs, iteration) {
             operation: () =>
                 contract.deposit({
                     value: randomAmount,
-                    gasPrice: ethers.utils.parseUnits(config.weth.gasPrice, "gwei"),
+                    maxFeePerGas: ethers.utils.parseUnits("0.25", "gwei"),
+                    maxPriorityFeePerGas: ethers.utils.parseUnits("0.11", "gwei"),
                     gasLimit: 104817,
                 }),
             walletIndex: index,
         };
     }).filter(Boolean);
 
-    // Execute deposits
     if (depositOperations.length > 0) {
         await executeTransactions(depositOperations, "Deposit");
     }
 
     await sleep(config.weth.interval * 1000);
 
-    // Prepare withdraw operations
     const withdrawOperations = await Promise.all(
         walletInfos.map(async ({ wallet, index }) => {
             const contract = new ethers.Contract(WETH_ADDRESS, WETH_ABI, wallet);
@@ -182,7 +179,8 @@ async function processWallets(walletConfigs, iteration) {
             return {
                 operation: () =>
                     contract.withdraw(wethBalance, {
-                        gasPrice: ethers.utils.parseUnits(config.weth.gasPrice, "gwei"),
+                        maxFeePerGas: ethers.utils.parseUnits("0.25", "gwei"),
+                        maxPriorityFeePerGas: ethers.utils.parseUnits("0.11", "gwei"),
                         gasLimit: 100000,
                     }),
                 walletIndex: index,
@@ -190,13 +188,11 @@ async function processWallets(walletConfigs, iteration) {
         })
     );
 
-    // Execute withdrawals
     const validWithdrawOperations = withdrawOperations.filter(Boolean);
     if (validWithdrawOperations.length > 0) {
         await executeTransactions(validWithdrawOperations, "Withdraw");
     }
 
-    // Wait for API update and fetch final points
     await sleep(5000);
 
     await Promise.all(
@@ -220,18 +216,4 @@ async function processWallets(walletConfigs, iteration) {
                     iteration: iteration + 1,
                     pointsEarned: pointsDifference,
                     totalPoints: finalPoints.totalPoints,
-                    rank: finalPoints.rank,
-                    rankChange: initialPoints.rank - finalPoints.rank
-                });
-            }
-        })
-    );
-}
-
-module.exports = {
-    walletFees,
-    walletPoints,
-    executeTransactions,
-    waitForAllConfirmations,
-    processWallets
-};
+                    rank: finalPoints.rank
